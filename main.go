@@ -7,11 +7,11 @@ import (
 )
 
 func main() {
-	// controller()
-	d := helpers.File()
-	for _, sub := range d.Regras["S"] {
-		fmt.Println(sub)
-	}
+	// A funçãp helpers.File pega a localização do arquivo no segundo argumento do cli, e converte para uma estrutura gramatica e retorna o ponteiro dela
+	gramatica := helpers.FileTxt()
+
+	fmt.Println(gramatica.Regras)
+	helpers.Simplificacao(gramatica)
 }
 
 func controller() {

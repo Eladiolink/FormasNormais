@@ -1,3 +1,5 @@
-S -> 1A | 1B
-A -> 1
-B -> 0
+S -> ABaC
+A -> BCa
+B -> b | Λ
+C -> D | Λ
+D -> d
