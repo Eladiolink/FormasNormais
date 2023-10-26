@@ -1,5 +1,5 @@
 S -> ABaC
 A -> BCa
-B -> b | Λ
+B -> b 
 C -> D | Λ
 D -> d

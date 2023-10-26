@@ -1,4 +1,4 @@
-package helpers
+package simplificacao
 
 import (
 	"FormasNormais/helpers/gramatica"
@@ -7,14 +7,7 @@ import (
 	"reflect"
 )
 
-func Simplificacao(gramatica *gramatica.Gramatica) {
-	semLambda := remocaoPalavraVazia(gramatica)
-	gramatica.Regras = semLambda
-
-	fmt.Println(gramatica.Regras)
-}
-
-func remocaoPalavraVazia(gramatica *gramatica.Gramatica) map[string][]string {
+func RemocaoPalavraVazia(gramatica *gramatica.Gramatica) map[string][]string {
 	// verificar quais elementos tem palavra vazia
 	var variaveisComPalavraVazia []string
 
