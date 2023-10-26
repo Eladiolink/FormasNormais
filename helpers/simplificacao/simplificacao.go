@@ -6,8 +6,9 @@ import (
 )
 
 func Simplificacao(gramatica *gramatica.Gramatica) {
-	semLambda := RemocaoPalavraVazia(gramatica)
-	gramatica.Regras = semLambda
+	// semLambda := RemocaoPalavraVazia(gramatica)
+	// gramatica.Regras = semLambda
 
-	fmt.Println(gramatica.Regras)
+	semUnitaria := RemocaoUnitarias(gramatica)
+	fmt.Println(semUnitaria)
 }

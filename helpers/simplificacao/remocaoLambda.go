@@ -2,7 +2,6 @@ package simplificacao
 
 import (
 	"FormasNormais/helpers/gramatica"
-	"fmt"
 	"strings"
 	"reflect"
 )
