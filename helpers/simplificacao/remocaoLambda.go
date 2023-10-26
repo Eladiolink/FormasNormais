@@ -27,14 +27,12 @@ func RemocaoPalavraVazia(gramatica *gramatica.Gramatica) map[string][]string {
 		}
 	}
 
-	fmt.Println(variaveisComPalavraVazia)
 	novaGramatica := make(map[string][]string)
 
 	for key := range gramatica.Regras {
 		novaGramatica[key] = encontrarRemover(gramatica.Regras[key], "Λ")
 	}
 
-	// fmt.Println(novaGramatica)
 	for key := range gramatica.Regras {
 		for _, variavel := range variaveisComPalavraVazia {
 			for _, regra := range gramatica.Regras[key] {
