@@ -24,6 +24,10 @@ func remocaoPalavraVazia(gramatica *gramatica.Gramatica) map[string][]string {
 		}
 	}
 
+	if(len(variaveisComPalavraVazia) == 0){
+		return gramatica.Regras
+	}
+
 	for key := range gramatica.Regras {
 		if estaNoSlice2(gramatica.Regras[key], variaveisComPalavraVazia) {
 			variaveisComPalavraVazia = append(variaveisComPalavraVazia, key)
