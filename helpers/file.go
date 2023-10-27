@@ -57,15 +57,17 @@ func File() *gramatica.Gramatica {
 			continue
 		}
 
-		line = removeFirstNCharacters(line, 3)
+		variavel := getStringToString(line,":")
+		line = removeFirstNCharacters(line, getIndexInString(line,":"))
+		line = strings.ReplaceAll(line, ":[", "")
 		line = strings.ReplaceAll(line, "],", "")
 		line = strings.ReplaceAll(line, "]", "")
+		
 		//talvez remover depois
 		line = strings.ReplaceAll(line, "_", "")
-
 		
 		for _,element := range strings.Split(line, ",") {
-			gramatica.P[string(char)] = append(gramatica.P[string(char)],strings.Split(element,";"))
+			gramatica.P[variavel] = append(gramatica.P[variavel],strings.Split(element,";"))
 		}
 
 	}
@@ -75,6 +77,36 @@ func File() *gramatica.Gramatica {
 	}
 
 	return gramatica
+}
+
+func getIndexInString(str string, simbol string) int {
+	index := -1
+	for x,i := range str{
+		if(strings.Compare(string(i),simbol) == 0 ){
+			index = x
+			break
+		}
+	}
+	return index
+}
+
+func getStringToString(str string, simbol string) string {
+	index := 0
+	for x,i := range str{
+		if(strings.Compare(string(i),simbol) == 0 ){
+			index = x
+			break
+		}
+	}
+
+	var substring string
+	if index >= 0 {
+		substring = str[:index]
+	} else {
+		fmt.Println("Caractere não encontrado na string.")
+	}
+
+	return substring
 }
 
 func removeFirstNCharacters(s string, n int) string {

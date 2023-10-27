@@ -4,7 +4,9 @@
 		alf: [a,a1,b],
 		P: {
 			A: [A_1;a;b;a_1;B, S;A_1;A,  a],
-			B: [abb]
+			B: [abb],
+			A1: [A_1,a;b,B],
+			S11:[A,B]
 		}
 	}
 }

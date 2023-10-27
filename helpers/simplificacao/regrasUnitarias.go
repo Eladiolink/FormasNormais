@@ -1,90 +1,141 @@
 package simplificacao
 
 import (
+	"FormasNormais/helpers/gramatica"
+	"fmt"
 	"strings"
 )
 
-
 // precissa-se de refatoração
-// func RemocaoUnitarias(gramatica *gramatica.Gramatica) map[string][]string {
+func RemocaoUnitarias(gramatica *gramatica.Gramatica) {
+		// Achar Variaveis com unitarios
+		comUnitarios := acharRegrasUnitarias(gramatica)
 
-// }
+		//Corrigir  unitarios recursivos
+		if(len(comUnitarios)>0){
+			acharUnitariosRecursivos(comUnitarios,gramatica.P)
+		}
+		
+		// remover unitarios
+		if(len(comUnitarios)>0){
+			removerUnitario(comUnitarios,gramatica)
+		}
 
-func copMap(original map[string][]string, copia map[string][]string) {
-	for chave, valor := range original {
-		copia[chave] = valor
+		if(len(comUnitarios)>0){
+			RemocaoUnitarias(gramatica)
+		}
+
+		fmt.Println(gramatica.P)
+}
+
+func removerUnitario(variaveisComUnitarios []string,gramatica *gramatica.Gramatica){
+	for _, variavesUnitarios := range variaveisComUnitarios{
+		for index,regra := range gramatica.P[variavesUnitarios]{
+			if(len(regra)==1 && eVariavel(regra[0],gramatica.V)){
+				gramatica.P[variavesUnitarios] = removerElementoArray(index,gramatica.P[variavesUnitarios])
+				gramatica.P[variavesUnitarios] = adicionarRegas(gramatica.P[regra[0]],gramatica.P[variavesUnitarios])
+			}
+		}
 	}
 }
 
-func add(regra []string, elements string, regras []string, unitario string, element string) []string {
-
-	for _, index := range regras {
-		regra = append(regra, index)
-	}
-
-	return regra
-}
-
-func remove(regra []string, element string, keys map[string]string) []string {
-	var new []string
-
-	for _, valor := range regra {
-		if strings.Compare(limparString(element), limparString(element)) != 0 || !inArray(valor, keys) {
-			new = append(new, valor)
+func adicionarRegas(adicionar [][] string, modificar [][] string) [][] string{
+	for _,value := range adicionar {
+		if(!verificarSeJaContem(modificar,value)){
+			modificar = append(modificar, value)
 		}
 	}
 
-	return new
+	return modificar
 }
 
-func inArray(letra string, keys map[string]string) bool {
+func verificarSeJaContem(matriz [][]string, value []string) bool {
+	
+	encontrado := false
 
-	for _, values := range keys {
-		if strings.Compare(values, limparString(letra)) == 0 {
+	for _, fatia := range matriz {
+        if stringSlicesEqual(fatia, value) {
+            encontrado = true
+            break
+        }
+    }
+	return encontrado
+}
+
+func stringSlicesEqual(slice1, slice2 []string) bool {
+    if len(slice1) != len(slice2) {
+        return false
+    }
+
+    for i := range slice1 {
+        if slice1[i] != slice2[i] {
+            return false
+        }
+    }
+
+    return true
+}
+
+func eVariavel(value string, variaveis []string) bool {
+
+	for _,key := range variaveis{
+		if(key == value){
 			return true
 		}
 	}
-
 	return false
 }
 
-func getKeys(regras map[string][]string) map[string]string {
-	mapa := make(map[string]string)
-	for values := range regras {
-		mapa[values] = values
+func acharUnitariosRecursivos(variaveisComUnitarios []string,regras map[string][][]string){
+	for _, variavesUnitarios := range variaveisComUnitarios{
+		el := regras[variavesUnitarios]
+		regras[variavesUnitarios] = acharRecursao(variavesUnitarios,el)
 	}
-
-	return mapa
 }
 
-func acharUnitario(regras map[string][]string) []string {
-	var unitarios []string
-	var keys []string
-
-	for key := range regras {
-		keys = append(keys, key)
-	}
-
-	for key := range regras {
-		for _, values := range regras[key] {
-			values = limparString(values)
-			if len(values) > 1 && !isKey(keys, values) {
-				continue
-			}
-
-			if isArray(keys, values) {
-				unitarios = append(unitarios, key)
+func acharRecursao(element string, regras [][]string)[][] string{
+	for index,r := range regras{
+		if (len(r) ==1) {
+			if(r[0] == element){
+				return removerElementoArray(index,regras)
 			}
 		}
-
 	}
 
-	return unitarios
+	return regras
 }
 
-func isKey(keys []string, element string) bool {
-	for _, value := range keys {
-		if strings.Compare(value, element) == 0 {
+func removerElementoArray(index int,array [][]string) [][]string {
+	if index >= 0 && index < len(array) {
+        // Use fatias para criar um novo array sem o elemento
+        newArray := append(array[:index], array[index+1:]...)
+		
+		return newArray
+    } else {
+        fmt.Println("Índice fora do intervalo.")
+    }
+	return array
+}
+
+func acharRegrasUnitarias(gramatica *gramatica.Gramatica)[]string{
+	var comUnitarios []string
+	regras := gramatica.P
+	for i,variaveis := range regras{
+		for _,producoes := range variaveis{
+			if len(producoes) == 1{
+				if(inArray(producoes[0],gramatica.V) && !inArray(i,comUnitarios)){
+					comUnitarios = append(comUnitarios, i)
+				}
+			}
+		}
+	}
+
+	return comUnitarios
+}
+
+func inArray(element string,variaveis []string) bool {
+	for _, elementos := range variaveis {
+		if strings.Compare(limparString(element),elementos) == 0 {
 			return true
 		}
 	}
@@ -94,14 +145,4 @@ func isKey(keys []string, element string) bool {
 
 func limparString(elemento string) string {
 	return strings.TrimRight(elemento, "\x00")
-}
-
-func isArray(keys []string, element string) bool {
-	for _, values := range keys {
-		if strings.Compare(values, element) == 0 {
-			return true
-		}
-	}
-
-	return false
 }
