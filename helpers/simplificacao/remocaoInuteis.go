@@ -8,7 +8,6 @@ import (
 
 
 func RemocaoInuteis(gramatica *gramatica.Gramatica){
-	// fmt.Println(gramatica.P)
 	// remover regras sem passo
 	removerInalcancaveis(gramatica)
 	removerRecursicoNotTerminal(gramatica)

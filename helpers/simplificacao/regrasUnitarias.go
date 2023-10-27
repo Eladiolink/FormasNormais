@@ -24,8 +24,6 @@ func RemocaoUnitarias(gramatica *gramatica.Gramatica) {
 		if(len(comUnitarios)>0){
 			RemocaoUnitarias(gramatica)
 		}
-
-		fmt.Println(gramatica.P)
 }
 
 func removerUnitario(variaveisComUnitarios []string,gramatica *gramatica.Gramatica){

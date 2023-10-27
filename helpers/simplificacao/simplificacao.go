@@ -2,14 +2,14 @@ package simplificacao
 
 import (
 	"FormasNormais/helpers/gramatica"
+	"fmt"
 )
 
 func Simplificacao(gramatica *gramatica.Gramatica) {
-	RemocaoPalavraVazia(gramatica)
-	// gramatica.Regras = semLambda
+	gramatica.P = RemocaoPalavraVazia(gramatica)
+	RemocaoUnitarias(gramatica)
+	RemocaoInuteis(gramatica)
 
-	// fmt.Println(gramatica)
-	// RemocaoUnitarias(gramatica)
-	// RemocaoInuteis(gramatica)
-	// fmt.Println(semUnitaria)
+	fmt.Println("GRAMÁTICA SIMPLIFICADA!!! （っ＾▿＾）")
+	fmt.Println()
 }
