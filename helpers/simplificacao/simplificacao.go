@@ -5,10 +5,11 @@ import (
 )
 
 func Simplificacao(gramatica *gramatica.Gramatica) {
-	// semLambda := RemocaoPalavraVazia(gramatica)
+	RemocaoPalavraVazia(gramatica)
 	// gramatica.Regras = semLambda
 
+	// fmt.Println(gramatica)
 	// RemocaoUnitarias(gramatica)
-	RemocaoInuteis(gramatica)
+	// RemocaoInuteis(gramatica)
 	// fmt.Println(semUnitaria)
 }

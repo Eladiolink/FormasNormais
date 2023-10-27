@@ -11,9 +11,7 @@ func RemocaoInuteis(gramatica *gramatica.Gramatica){
 	// fmt.Println(gramatica.P)
 	// remover regras sem passo
 	removerInalcancaveis(gramatica)
-
 	removerRecursicoNotTerminal(gramatica)
-	fmt.Println(gramatica.P)
 }
 
 func removerRecursicoNotTerminal(gramatica *gramatica.Gramatica){
