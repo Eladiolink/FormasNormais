@@ -2,6 +2,7 @@ package main
 
 import (
 	"FormasNormais/helpers"
+	"FormasNormais/helpers/simplificacao"
 	"fmt"
 	"os"
 )
@@ -11,10 +12,8 @@ func main() {
 	gramatica := helpers.File()
 
 	// helpers.File()
-	fmt.Println(gramatica.V)
-	fmt.Println(gramatica.Alf)
-	fmt.Println(gramatica.P)
-	// simplificacao.Simplificacao(gramatica)
+
+	simplificacao.Simplificacao(gramatica)
 }
 
 func controller() {

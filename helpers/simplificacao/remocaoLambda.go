@@ -1,65 +1,18 @@
 package simplificacao
 
 import (
-	"FormasNormais/helpers/gramatica"
-	"strings"
 	"reflect"
+	"strings"
 )
 
-func RemocaoPalavraVazia(gramatica *gramatica.Gramatica) map[string][]string {
-	// verificar quais elementos tem palavra vazia
-	var variaveisComPalavraVazia []string
+//Precisa-se de refatoração
 
-	for key := range gramatica.Regras {
-		if estaNoSlice(gramatica.Regras[key], "Λ") {
-			variaveisComPalavraVazia = append(variaveisComPalavraVazia, key)
-		}
-	}
+// func RemocaoPalavraVazia(gramatica *gramatica.Gramatica) map[string][]string {
+// 	// verificar quais elementos tem palavra vazia
+// 	var variaveisComPalavraVazia []string
 
-	if(len(variaveisComPalavraVazia) == 0){
-		return gramatica.Regras
-	}
-
-	for key := range gramatica.Regras {
-		if estaNoSlice2(gramatica.Regras[key], variaveisComPalavraVazia) {
-			variaveisComPalavraVazia = append(variaveisComPalavraVazia, key)
-		}
-	}
-
-	novaGramatica := make(map[string][]string)
-
-	for key := range gramatica.Regras {
-		novaGramatica[key] = encontrarRemover(gramatica.Regras[key], "Λ")
-	}
-
-	for key := range gramatica.Regras {
-		for _, variavel := range variaveisComPalavraVazia {
-			for _, regra := range gramatica.Regras[key] {
-				if regra != "Λ" {
-					novoElemento := strings.ReplaceAll(regra, variavel, "")
-					if !verificaOcorrencia(novaGramatica[key], novoElemento) {
-						novaGramatica[key] = append(novaGramatica[key], novoElemento)
-					}
-
-				}
-			}
-
-			for _, regra := range novaGramatica[key] {
-				if regra != "Λ" {
-
-					novoElemento := strings.ReplaceAll(regra, variavel, "")
-
-					if !verificaOcorrencia(novaGramatica[key], novoElemento) {
-						novaGramatica[key] = append(novaGramatica[key], novoElemento)
-					}
-
-				}
-			}
-		}
-	}
-
-	return novaGramatica
-}
+// 	return novaGramatica
+// }
 
 func estaNoSlice(slice []string, value string) bool {
 
@@ -82,25 +35,25 @@ func estaNoSlice2(slice []string, values []string) bool {
 }
 
 func compareArrays(arr1, arr2 []string) bool {
-    // Verificar se os tamanhos dos arrays são diferentes
-    if len(arr1) != len(arr2) {
-        return false
-    }
+	// Verificar se os tamanhos dos arrays são diferentes
+	if len(arr1) != len(arr2) {
+		return false
+	}
 
-    // Criar mapas para contar a frequência dos elementos em ambos os arrays
-    countMap1 := make(map[string]int)
-    countMap2 := make(map[string]int)
+	// Criar mapas para contar a frequência dos elementos em ambos os arrays
+	countMap1 := make(map[string]int)
+	countMap2 := make(map[string]int)
 
-    for _, element := range arr1 {
-        countMap1[element]++
-    }
+	for _, element := range arr1 {
+		countMap1[element]++
+	}
 
-    for _, element := range arr2 {
-        countMap2[element]++
-    }
+	for _, element := range arr2 {
+		countMap2[element]++
+	}
 
-    // Comparar os mapas para verificar se os arrays têm os mesmos elementos
-    return reflect.DeepEqual(countMap1, countMap2)
+	// Comparar os mapas para verificar se os arrays têm os mesmos elementos
+	return reflect.DeepEqual(countMap1, countMap2)
 }
 
 func encontrarRemover(slice []string, elemento string) []string {

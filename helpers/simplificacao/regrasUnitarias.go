@@ -1,41 +1,14 @@
 package simplificacao
 
 import (
-	"FormasNormais/helpers/gramatica"
-	"fmt"
 	"strings"
 )
 
-func RemocaoUnitarias(gramatica *gramatica.Gramatica) map[string][]string {
 
-	variavesComUnitario := acharUnitario(gramatica.Regras)
-	fmt.Println(variavesComUnitario)
-	if len(variavesComUnitario) != 0 {
-		keys := getKeys(gramatica.Regras)
+// precissa-se de refatoração
+// func RemocaoUnitarias(gramatica *gramatica.Gramatica) map[string][]string {
 
-		for _, value := range variavesComUnitario {
-			regras := gramatica.Regras[value]
-			gramatica.Regras = replaceRegra(regras, keys, value, gramatica)
-		}
-
-		RemocaoUnitarias(gramatica)
-	}
-
-	return gramatica.Regras
-}
-
-func replaceRegra(value []string, keys map[string]string, unitario string, g *gramatica.Gramatica) map[string][]string {
-	new := &gramatica.Gramatica{}
-	copMap(g.Regras, new.Regras)
-
-	for _, elements := range value {
-		if inArray(limparString(elements), keys) {
-			new.Regras[limparString(unitario)] = remove(g.Regras[limparString(unitario)], limparString(elements), keys)
-			new.Regras[limparString(unitario)] = add(new.Regras[limparString(unitario)], elements, g.Regras[limparString(elements)], limparString(elements), limparString(unitario))
-		}
-	}
-	return new.Regras
-}
+// }
 
 func copMap(original map[string][]string, copia map[string][]string) {
 	for chave, valor := range original {
