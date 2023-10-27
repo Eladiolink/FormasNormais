@@ -1,5 +1,7 @@
 package gramatica
 
 type Gramatica struct {
-	Regras map[string][]string
+	V   []string
+	Alf []string
+	P   map[string][][]string
 }

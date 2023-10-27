@@ -2,6 +2,7 @@ package helpers
 
 import (
 	"FormasNormais/helpers/gramatica"
+	"bufio"
 	"fmt"
 	"os"
 	"strings"
@@ -9,80 +10,88 @@ import (
 
 func File() *gramatica.Gramatica {
 	file, err := os.Open(os.Args[1])
+
 	if err != nil {
 		fmt.Println("Erro ao abrir o arquivo:", err)
 		return nil
 	}
 	defer file.Close()
 
-	data := make([]byte, 100)
-	_, err = file.Read(data)
-	if err != nil {
+	scanner := bufio.NewScanner(file)
+	gramatica := &gramatica.Gramatica{
+		P: make(map[string][][]string),
+	}
+	for scanner.Scan() {
+		line := scanner.Text()
+		line = strings.ReplaceAll(line, " ", "")
+		line = strings.ReplaceAll(line, "\t", "")
+
+		if strings.Contains(line, "G:") || strings.Compare(line,"{") == 0 {
+			continue
+		}
+		
+		if strings.Contains(line, "V:") {
+			line = strings.ReplaceAll(line, "V:[", "")
+			line = strings.ReplaceAll(line, "],", "")
+			gramatica.V = strings.Split(line, ",")
+			continue
+		}
+
+		gramatica.V = limparStringAll(gramatica.V)
+
+		if strings.Contains(line, "alf:") {
+			line = strings.ReplaceAll(line, "alf:[", "")
+			line = strings.ReplaceAll(line, "],", "")
+			gramatica.Alf = strings.Split(line, ",")
+			continue
+		}
+
+		gramatica.Alf = limparStringAll(gramatica.Alf)
+
+		if strings.Contains(line, "P:{") {
+			continue
+		}
+		char := rune(line[0])
+
+		if char == 125 {
+			continue
+		}
+
+		line = removeFirstNCharacters(line, 3)
+		line = strings.ReplaceAll(line, "],", "")
+		line = strings.ReplaceAll(line, "]", "")
+		//talvez remover depois
+		line = strings.ReplaceAll(line, "_", "")
+
+		
+		for _,element := range strings.Split(line, ",") {
+			gramatica.P[string(char)] = append(gramatica.P[string(char)],strings.Split(element,";"))
+		}
+
+	}
+
+	if err := scanner.Err(); err != nil {
 		fmt.Println("Erro ao ler o arquivo:", err)
-		return nil
 	}
 
-	// Dividir a string em substrings usando quebras de linha como delimitador
-	substrings := strings.FieldsFunc(string(data), func(r rune) bool {
-		return r == '\n' || r == '\r'
-	})
-
-	//Remove Simbolos vazios
-	for i, sub := range substrings {
-		substrings[i] = strings.ReplaceAll(sub, " ", "")
-	}
-
-	myMap := make(map[string][]string)
-
-	for _, sub := range substrings {
-		variavel := strings.Split(sub, "->")
-		regras := strings.Split(variavel[1], "|")
-		myMap[variavel[0]] = regras
-	}
-
-	dados := &gramatica.Gramatica{}
-
-	dados.Regras = myMap
-
-	return dados
+	return gramatica
 }
 
-func FileTxt() *gramatica.Gramatica {
-	file, err := os.Open(os.Args[1])
-	if err != nil {
-		fmt.Println("Erro ao abrir o arquivo:", err)
-		return nil
+func removeFirstNCharacters(s string, n int) string {
+	if n >= len(s) {
+		return ""
 	}
-	defer file.Close()
+	return s[n:]
+}
 
-	data := make([]byte, 100)
-	_, err = file.Read(data)
-	if err != nil {
-		fmt.Println("Erro ao ler o arquivo:", err)
-		return nil
+func limparStringAll(elementos []string) []string {
+	for _, elemento := range elementos {
+		elemento = limparString(elemento)
 	}
 
-	// Dividir a string em substrings usando quebras de linha como delimitador
-	substrings := strings.FieldsFunc(string(data), func(r rune) bool {
-		return r == '\n' || r == '\r'
-	})
+	return elementos
+}
 
-	//Remove Simbolos vazios
-	for i, sub := range substrings {
-		substrings[i] = strings.ReplaceAll(sub, " ", "")
-	}
-
-	myMap := make(map[string][]string)
-
-	for _, sub := range substrings {
-		variavel := strings.Split(sub, "->")
-		regras := strings.Split(variavel[1], "|")
-		myMap[variavel[0]] = regras
-	}
-
-	dados := &gramatica.Gramatica{}
-
-	dados.Regras = myMap
-
-	return dados
+func limparString(elemento string) string {
+	return strings.TrimRight(elemento, "\x00")
 }

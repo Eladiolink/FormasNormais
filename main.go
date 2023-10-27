@@ -2,17 +2,19 @@ package main
 
 import (
 	"FormasNormais/helpers"
-	"FormasNormais/helpers/simplificacao"
 	"fmt"
 	"os"
 )
 
 func main() {
 	// A funçãp helpers.File pega a localização do arquivo no segundo argumento do cli, e converte para uma estrutura gramatica e retorna o ponteiro dela
-	gramatica := helpers.FileTxt()
+	gramatica := helpers.File()
 
-	fmt.Println(gramatica.Regras)
-	simplificacao.Simplificacao(gramatica)
+	// helpers.File()
+	fmt.Println(gramatica.V)
+	fmt.Println(gramatica.Alf)
+	fmt.Println(gramatica.P)
+	// simplificacao.Simplificacao(gramatica)
 }
 
 func controller() {
