@@ -10,6 +10,6 @@ func Simplificacao(gramatica *gramatica.Gramatica) {
 	RemocaoUnitarias(gramatica)
 	RemocaoInuteis(gramatica)
 
-	fmt.Println("GRAMÁTICA SIMPLIFICADA!!! （っ＾▿＾）")
+	fmt.Println("\nGRAMÁTICA SIMPLIFICADA!!! （っ＾▿＾）っ")
 	fmt.Println()
 }

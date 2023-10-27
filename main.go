@@ -2,18 +2,19 @@ package main
 
 import (
 	"FormasNormais/helpers"
-	"FormasNormais/helpers/simplificacao"
+	formaprechomsky "FormasNormais/helpers/formaPreChomsky"
 	"fmt"
 	"os"
 )
 
 func main() {
-	// A funçãp helpers.File pega a localização do arquivo no segundo argumento do cli, e converte para uma estrutura gramatica e retorna o ponteiro dela
+	/* A funçãp helpers.File pega a localização do arquivo no segundo argumento do cli,
+	 e converte para uma estrutura gramatica e retorna o ponteiro dela */
 	gramatica := helpers.File()
 
-	// helpers.File()
+	formaprechomsky.Formaprechomsky(gramatica)
 
-	simplificacao.Simplificacao(gramatica)
+	helpers.PrintGramatica(gramatica)
 }
 
 func controller() {
