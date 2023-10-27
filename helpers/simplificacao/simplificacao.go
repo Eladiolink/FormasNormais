@@ -8,6 +8,7 @@ func Simplificacao(gramatica *gramatica.Gramatica) {
 	// semLambda := RemocaoPalavraVazia(gramatica)
 	// gramatica.Regras = semLambda
 
-	RemocaoUnitarias(gramatica)
+	// RemocaoUnitarias(gramatica)
+	RemocaoInuteis(gramatica)
 	// fmt.Println(semUnitaria)
 }

@@ -3,10 +3,10 @@
 		V: [S, A, B, C],
 		alf: [a,b],
 		P: {
-			S: [a;A],
-			A: [B, a;A],
-			B: [C,b;B,B;B],
-			C:[B,a;b]
+			S:[a;S,a;A,C],
+			A:[a],
+			B:[b;b],
+			C:[a;C;b]
 		}
 	}
 }
