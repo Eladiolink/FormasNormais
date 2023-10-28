@@ -13,7 +13,7 @@ func Formaprechomsky(gramatica *gramatica.Gramatica){
 	// Criar Novas Váriaveis
 	novasVariaveisComTerminais(gramatica)
 
-	fmt.Println("GRAMÁTICA NA FORMA PRÉ-CHOMSKY!!! ʕ•́ᴥ•̀ʔっ \n")
+	fmt.Printf("GRAMÁTICA NA FORMA PRÉ-CHOMSKY!!! ʕ•́ᴥ•̀ʔっ \n")
 }
 
 func novasVariaveisComTerminais(gramatica *gramatica.Gramatica){
