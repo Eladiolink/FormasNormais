@@ -1,8 +1,9 @@
 package main
 
 import (
+	// formaprechomsky "FormasNormais/formaPreChomsky"
 	"FormasNormais/helpers"
-	formaprechomsky "FormasNormais/helpers/formaPreChomsky"
+	// "FormasNormais/helpers/simplificacao"
 	"fmt"
 	"os"
 )
@@ -12,7 +13,8 @@ func main() {
 	 e converte para uma estrutura gramatica e retorna o ponteiro dela */
 	gramatica := helpers.File()
 
-	formaprechomsky.Formaprechomsky(gramatica)
+	// simplificacao.Simplificacao(gramatica)
+	// formaprechomsky.Formaprechomsky(gramatica)
 
 	helpers.PrintGramatica(gramatica)
 }
