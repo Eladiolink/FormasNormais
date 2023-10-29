@@ -4,6 +4,8 @@ import (
 	// formaprechomsky "FormasNormais/formaPreChomsky"
 	formagreibach "FormasNormais/formasNormais/formaGreibach"
 	"FormasNormais/helpers"
+	"FormasNormais/helpers/gramatica"
+
 	// "FormasNormais/helpers/simplificacao"
 	"fmt"
 	"os"
@@ -17,17 +19,20 @@ func main() {
 	// simplificacao.Simplificacao(gramatica)
 	// formaprechomsky.Formaprechomsky(gramatica)
 
-	gramatica = formagreibach.FormaGreibach(gramatica)
+
+	gramatica = controller(gramatica)
 	helpers.PrintGramatica(gramatica)
 }
 
-func controller() {
+func controller(gramatica * gramatica.Gramatica)  * gramatica.Gramatica {
 	switch os.Args[2] {
 	case "C":
 		fmt.Println("Forma Normal Chomsky")
-	case "G":
-		fmt.Println("Forma Normal Geibach")
+	case "-G":
+		return formagreibach.FormaGreibach(gramatica)
 	default:
 		fmt.Println("Argunmento de entrada inválido!")
 	}
+	
+	return gramatica
 }
