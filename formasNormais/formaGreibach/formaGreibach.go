@@ -2,6 +2,7 @@ package formagreibach
 
 import (
 	formaprechomsky "FormasNormais/formasNormais/formaPreChomsky"
+	"FormasNormais/helpers"
 	"FormasNormais/helpers/gramatica"
 	"fmt"
 	"strconv"
@@ -22,13 +23,13 @@ func FormaGreibach(gramatica *gramatica.Gramatica) *gramatica.Gramatica {
 
 	// RenomearVariaveis
 	renomearVariaveis(gramatica)
+	helpers.PrintProducoes(gramatica)
 
 	// Verificar Ax -> Aj com x<j
 	verificaVariaveisNumeros(gramatica, 0)
 
 	// Remover Recursão a esquerda
 	gramatica = removerRecursaoEsquerda(gramatica)
-
 	gramatica = relocRegras(gramatica, 0)
 
 	fmt.Printf("\nGRAMÁTICA NA FORMA GREIBACH!!! (っ＾▿＾)۶🍸🌟🍺٩(˘◡˘ ) \n\n")
@@ -179,7 +180,7 @@ func renomearVariaveis(gramatica *gramatica.Gramatica) {
 // Verificar  e Corrige Ax -> Aj com x<j
 func verificaVariaveisNumeros(gramatica *gramatica.Gramatica, qtInicial int) {
 	quantidade := qtInicial
-	var remover []elemento
+	var elementosRemover []regraRemove
 	newGramatica := copiarGramatica(*gramatica)
 
 	for keys, regras := range gramatica.P {
@@ -189,23 +190,26 @@ func verificaVariaveisNumeros(gramatica *gramatica.Gramatica, qtInicial int) {
 					quantidade += 1
 					adicionarRegasComSubstituicao(producoes[0], newGramatica, producoes, chave, keys)
 
-					elm := elemento{
-						Chave: chave,
+					elm := regraRemove{
 						Key:   keys,
+						Regra: producoes,
 					}
-
-					remover = append(remover, elm)
+	
+					elementosRemover = append(elementosRemover, elm)
 				}
 			}
 		}
 	}
 
-	for _, elm := range remover {
-		newGramatica.P[elm.Key] = removerElementoPorIndiceMatriz(newGramatica.P[elm.Key], elm.Chave)
+	for _,elm := range elementosRemover{
+		for index,regra := range newGramatica.P[elm.Key]{
+			if compareString(regra,elm.Regra){
+				newGramatica.P[elm.Key] = removerElementoPorIndiceMatriz(newGramatica.P[elm.Key],index)
+			}
+		}
 	}
 
 	gramatica.P = newGramatica.P
-
 	if quantidade != qtInicial {
 		verificaVariaveisNumeros(gramatica, quantidade)
 	}
@@ -229,7 +233,7 @@ func adicionarRegasComSubstituicaoReturn(adicionar string, gramatica *gramatica.
 
 func adicionarRegasComSubstituicao(adicionar string, gramatica *gramatica.Gramatica, dado []string, key int, chave string) {
 	regraAdicionar := removerElementoPorIndice(gramatica.P[chave][key], 0)
-	// fmt.Println(gramatica.P[chave][key],regraAdicionar)
+
 	for _, elm := range gramatica.P[adicionar] {
 		joinRegra := make([]string, len(elm))
 		copy(joinRegra, elm)
@@ -237,8 +241,8 @@ func adicionarRegasComSubstituicao(adicionar string, gramatica *gramatica.Gramat
 		for _, key := range regraAdicionar {
 			joinRegra = append(joinRegra, key)
 		}
-		// fmt.Println("Adicionar:",joinRegra)
 		gramatica.P[chave] = append(gramatica.P[chave], joinRegra)
+
 	}
 }
 
