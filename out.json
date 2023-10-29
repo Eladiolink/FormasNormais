@@ -1,14 +1,11 @@
 {
 	G:{
-		V: [A1, A2, A3, A4, A5, Z1],
+		V: [A1, A2, Z1],
 		alf: [a, b],
 		P: {
-			A1: [b;A2;A3, b;A2],
-			A3: [b, b;A3],
-			A2: [a, b;A2;A5, b;A3;A2;A5, a;Z1, b;A2;A5;Z1, b;A3;A2;A5;Z1],
-			A4: [b],
-			A5: [a],
-			Z1: [a, a;Z1]
+			Z1: [b;A1, a;A2;A1, b;A1;A2;A1, a;Z1;A2;A1, b;A1;Z1;A2;A1, b;A1;Z1, a;A2;A1;Z1, b;A1;A2;A1;Z1, a;Z1;A2;A1;Z1, b;A1;Z1;A2;A1;Z1, a;A2;A1, b;A1;A2;A1, a;Z1;A2;A1, b;A1;Z1;A2;A1, a;A2;A1;Z1, b;A1;A2;A1;Z1, a;Z1;A2;A1;Z1, b;A1;Z1;A2;A1;Z1],
+			A1: [a, b;A1, a;Z1, b;A1;Z1],
+			A2: [b, a;A2, b;A1;A2, a;Z1;A2, b;A1;Z1;A2]
 		}
 	}
 }
