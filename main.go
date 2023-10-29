@@ -2,6 +2,7 @@ package main
 
 import (
 	// formaprechomsky "FormasNormais/formaPreChomsky"
+	formagreibach "FormasNormais/formasNormais/formaGreibach"
 	"FormasNormais/helpers"
 	// "FormasNormais/helpers/simplificacao"
 	"fmt"
@@ -16,6 +17,7 @@ func main() {
 	// simplificacao.Simplificacao(gramatica)
 	// formaprechomsky.Formaprechomsky(gramatica)
 
+	gramatica = formagreibach.FormaGreibach(gramatica)
 	helpers.PrintGramatica(gramatica)
 }
 

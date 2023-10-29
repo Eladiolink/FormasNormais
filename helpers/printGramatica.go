@@ -6,6 +6,7 @@ import (
 )
 
 func PrintGramatica(gramatica *gramatica.Gramatica){
+	fmt.Printf("\n=============== Gramática ===============\n\n")
 	PrintVariaveis(gramatica)
 	PrintAlfabeto(gramatica)
 	PrintProducoes(gramatica)
