@@ -18,7 +18,7 @@ func main() {
 	// formaprechomsky.Formaprechomsky(gramatica)
 
 	gramatica = formagreibach.FormaGreibach(gramatica)
-	helpers.PrintGramatica(gramatica)
+	// helpers.PrintGramatica(gramatica)
 }
 
 func controller() {
