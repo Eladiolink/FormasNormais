@@ -2,8 +2,8 @@ package formagreibach
 
 import (
 	formaprechomsky "FormasNormais/formasNormais/formaPreChomsky"
-	"FormasNormais/helpers"
 	"FormasNormais/helpers/gramatica"
+	"fmt"
 	"strconv"
 )
 
@@ -21,7 +21,6 @@ func FormaGreibach(gramatica *gramatica.Gramatica) *gramatica.Gramatica {
 	formaprechomsky.Formaprechomsky(gramatica)
 
 	// RenomearVariaveis
-	helpers.PrintGramatica(gramatica)
 	renomearVariaveis(gramatica)
 
 	// Verificar Ax -> Aj com x<j
@@ -32,9 +31,8 @@ func FormaGreibach(gramatica *gramatica.Gramatica) *gramatica.Gramatica {
 
 	gramatica = relocRegras(gramatica, 0)
 
-	// fmt.Printf("\nGRAMÁTICA NA FORMA GREIBACH!!! (っ＾▿＾)۶🍸🌟🍺٩(˘◡˘ ) \n\n")
+	fmt.Printf("\nGRAMÁTICA NA FORMA GREIBACH!!! (っ＾▿＾)۶🍸🌟🍺٩(˘◡˘ ) \n\n")
 
-	helpers.PrintProducoes(gramatica)
 	return gramatica
 
 }
