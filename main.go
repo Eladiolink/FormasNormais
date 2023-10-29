@@ -4,6 +4,7 @@ import (
 	// formaprechomsky "FormasNormais/formaPreChomsky"
 	formagreibach "FormasNormais/formasNormais/formaGreibach"
 	"FormasNormais/helpers"
+	"FormasNormais/helpers/export"
 	"FormasNormais/helpers/gramatica"
 
 	// "FormasNormais/helpers/simplificacao"
@@ -22,6 +23,7 @@ func main() {
 
 	gramatica = controller(gramatica)
 	helpers.PrintGramatica(gramatica)
+	export.ExportToJson(gramatica)
 }
 
 func controller(gramatica * gramatica.Gramatica)  * gramatica.Gramatica {
@@ -33,6 +35,6 @@ func controller(gramatica * gramatica.Gramatica)  * gramatica.Gramatica {
 	default:
 		fmt.Println("Argunmento de entrada inválido!")
 	}
-	
+
 	return gramatica
 }
