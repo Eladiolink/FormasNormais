@@ -23,7 +23,7 @@ func novasVariaveisComTerminais(gramatica *gramatica.Gramatica){
 
 	for chave,elementos := range gramatica.P {
 		for i,producoes := range elementos{
-			if(len(producoes)>1){
+			if len(producoes)>1 {
 				for j,caracter := range producoes{
 					if (!helpers.IsVariavel(caracter,gramatica.V)){
 						novaVariavel := "V"+caracter
@@ -34,6 +34,7 @@ func novasVariaveisComTerminais(gramatica *gramatica.Gramatica){
 							gramatica.P[novaVariavel] = append(gramatica.P[novaVariavel],el)
 							gramatica.V = append(gramatica.V, novaVariavel)
 						}
+
 						gramatica.P[chave][i][j] = novaVariavel
 					}
 				}
@@ -41,3 +42,4 @@ func novasVariaveisComTerminais(gramatica *gramatica.Gramatica){
 		}
 	}
 }
+

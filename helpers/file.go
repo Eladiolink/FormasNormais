@@ -51,6 +51,11 @@ func File() *gramatica.Gramatica {
 		if strings.Contains(line, "P:{") {
 			continue
 		}
+		
+		if len(line) == 0 {
+			continue
+		}
+
 		char := rune(line[0])
 
 		if char == 125 {

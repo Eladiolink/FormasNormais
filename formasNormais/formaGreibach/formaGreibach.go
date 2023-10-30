@@ -6,6 +6,7 @@ import (
 	"FormasNormais/helpers/gramatica"
 	"FormasNormais/test"
 	"fmt"
+	"reflect"
 	"strconv"
 )
 
@@ -24,10 +25,11 @@ func FormaGreibach(gramatica *gramatica.Gramatica) *gramatica.Gramatica {
 
 	// RenomearVariaveis
 	renomearVariaveis(gramatica)
-	helpers.PrintProducoes(gramatica)
 
 	// Verificar Ax -> Aj com x<j
+	helpers.PrintProducoes(gramatica)
 	verificaVariaveisNumeros(gramatica, 0)
+	helpers.PrintProducoes(gramatica)
 
 	// Remover Recursão a esquerda
 	gramatica = removerRecursaoEsquerda(gramatica)
@@ -37,6 +39,11 @@ func FormaGreibach(gramatica *gramatica.Gramatica) *gramatica.Gramatica {
 
 	test.ValidadeGreibachGramatica(gramatica)
 
+	for key,elm := range gramatica.P{
+	 gramatica.P[key]	= removeIdenticalSubSlices(elm)
+	}
+
+	fmt.Println(len(gramatica.P["Z1"]),gramatica.P["Z1"])
 	return gramatica
 
 }
@@ -50,7 +57,7 @@ func relocRegras(gramatica *gramatica.Gramatica, qtInicial int) *gramatica.Grama
 	for keys, producoes := range gramatica.P {
 		for chave, regra := range producoes {
 			if helpers.IsVariavel(regra[0], gramatica.V) {
-				quantidade+=1
+				quantidade += 1
 				res := adicionarRegasComSubstituicaoReturn(regra[0], newGramatica, regra, chave, keys)
 
 				for _, newElement := range res {
@@ -68,10 +75,10 @@ func relocRegras(gramatica *gramatica.Gramatica, qtInicial int) *gramatica.Grama
 		}
 	}
 
-	for _,elm := range elementosRemover{
-		for index,regra := range newGramatica.P[elm.Key]{
-			if compareString(regra,elm.Regra){
-				newGramatica.P[elm.Key] = removerElementoPorIndiceMatriz(newGramatica.P[elm.Key],index)
+	for _, elm := range elementosRemover {
+		for index, regra := range newGramatica.P[elm.Key] {
+			if compareString(regra, elm.Regra) {
+				newGramatica.P[elm.Key] = removerElementoPorIndiceMatriz(newGramatica.P[elm.Key], index)
 			}
 		}
 	}
@@ -152,15 +159,27 @@ func renomearVariaveis(gramatica *gramatica.Gramatica) {
 	renameMap := (make(map[string]string))
 
 	for chave, valor := range gramatica.V {
-		renameMap[valor] = "A" + strconv.Itoa(chave+1)
+		newVar := "A" + strconv.Itoa(chave+1)
+
+		if !helpers.InArray(newVar, gramatica.V) {
+			renameMap[valor] = newVar
+		}
+
 	}
+
+	ranameCaracter := []string {}
+
+	for i,_ :=  range renameMap{
+		ranameCaracter = append(ranameCaracter, i)
+	}
+
 
 	for r, regras := range gramatica.P {
 		for p, producoes := range regras {
 			for c, caracter := range producoes {
-				if !helpers.IsVariavel(caracter,gramatica.Alf) {
+				if helpers.InArray(caracter,ranameCaracter) {
 					gramatica.P[r][p][c] = renameMap[caracter]
-				}
+				}		
 			}
 		}
 	}
@@ -176,6 +195,12 @@ func renomearVariaveis(gramatica *gramatica.Gramatica) {
 		newVariaveis = append(newVariaveis, renameMap[elm])
 	}
 
+	for _,elm := range gramatica.V{
+		if !helpers.InArray(elm,ranameCaracter){
+			newVariaveis = append(newVariaveis, elm)
+		}
+	}
+
 	gramatica.V = newVariaveis
 
 }
@@ -189,7 +214,7 @@ func verificaVariaveisNumeros(gramatica *gramatica.Gramatica, qtInicial int) {
 	for keys, regras := range gramatica.P {
 		for chave, producoes := range regras {
 			if len(producoes) > 1 {
-				if keys < producoes[0] && helpers.IsVariavel(producoes[0], newGramatica.V) {
+				if keys > producoes[0] && helpers.IsVariavel(producoes[0], newGramatica.V) {
 					quantidade += 1
 					adicionarRegasComSubstituicao(producoes[0], newGramatica, producoes, chave, keys)
 
@@ -197,25 +222,27 @@ func verificaVariaveisNumeros(gramatica *gramatica.Gramatica, qtInicial int) {
 						Key:   keys,
 						Regra: producoes,
 					}
-	
+
 					elementosRemover = append(elementosRemover, elm)
 				}
 			}
 		}
 	}
 
-	for _,elm := range elementosRemover{
-		for index,regra := range newGramatica.P[elm.Key]{
-			if compareString(regra,elm.Regra){
-				newGramatica.P[elm.Key] = removerElementoPorIndiceMatriz(newGramatica.P[elm.Key],index)
+	for _, elm := range elementosRemover {
+		for index, regra := range newGramatica.P[elm.Key] {
+			if compareString(regra, elm.Regra) {
+				newGramatica.P[elm.Key] = removerElementoPorIndiceMatriz(newGramatica.P[elm.Key], index)
 			}
 		}
 	}
 
-	gramatica.P = newGramatica.P
+	
 	if quantidade != qtInicial {
-		verificaVariaveisNumeros(gramatica, quantidade)
+		verificaVariaveisNumeros(newGramatica, quantidade)
 	}
+
+	gramatica.P = newGramatica.P
 }
 
 func adicionarRegasComSubstituicaoReturn(adicionar string, gramatica *gramatica.Gramatica, dado []string, key int, chave string) [][]string {
@@ -302,4 +329,36 @@ func copiarGramatica(original gramatica.Gramatica) *gramatica.Gramatica {
 	}
 
 	return &copia
+}
+
+
+func removeIdenticalSubSlices(s [][]string) [][]string {
+	var unique [][]string
+
+	for _, subSlice := range s {
+		found := false
+		for _, existing := range unique {
+			if reflect.DeepEqual(subSlice, existing) || equalSlices(subSlice, existing) {
+				found = true
+				break
+			}
+		}
+		if !found {
+			unique = append(unique, subSlice)
+		}
+	}
+	return unique
+}
+	
+func equalSlices(s1, s2 []string) bool {
+	if len(s1) != len(s2) {
+		return false
+	}
+
+	for i, v := range s1 {
+		if v != s2[i] {
+			return false
+		}
+	}
+	return true
 }
