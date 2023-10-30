@@ -6,6 +6,7 @@ import (
 	"FormasNormais/helpers"
 	"FormasNormais/helpers/export"
 	"FormasNormais/helpers/gramatica"
+	"FormasNormais/test"
 	"fmt"
 	"os"
 )
@@ -25,8 +26,9 @@ func main() {
 
 func controller(gramatica * gramatica.Gramatica)  * gramatica.Gramatica {
 	switch os.Args[2] {
-	case "C":
+	case "-C":
 		fmt.Println("Forma Normal Chomsky")
+		test.ValidadeChomskyGramatica(gramatica)
 	case "-G":
 		return formagreibach.FormaGreibach(gramatica)
 	default:

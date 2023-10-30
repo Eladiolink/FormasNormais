@@ -35,7 +35,7 @@ func FormaGreibach(gramatica *gramatica.Gramatica) *gramatica.Gramatica {
 
 	fmt.Printf("\nGRAMÁTICA NA FORMA GREIBACH!!! (っ＾▿＾)۶🍸🌟🍺٩(˘◡˘ ) \n\n")
 
-	test.ValidadeGreibachGramaticar(gramatica)
+	test.ValidadeGreibachGramatica(gramatica)
 
 	return gramatica
 

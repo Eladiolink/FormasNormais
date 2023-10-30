@@ -6,13 +6,13 @@ import (
 	"fmt"
 )
 
-func ValidadeGreibachGramaticar(gramatica *gramatica.Gramatica) {
+func ValidadeGreibachGramatica(gramatica *gramatica.Gramatica) {
 	validacaoUnitario := false
 	validacaoFormulaGeral := false
 
 	for _, producoes := range gramatica.P {
 		for _, regras := range producoes {
-			if verificarUnitario(regras, gramatica) {
+			if VerificarUnitario(regras, gramatica) {
 				validacaoUnitario = true
 			} else {
 				if len(regras) == 1 {
@@ -53,7 +53,7 @@ func verificarPrimeiroSimboloUnitarioERestanteVariavel(unitario []string, gramat
 	return true
 }
 
-func verificarUnitario(unitario []string, gramatica *gramatica.Gramatica) bool {
+func VerificarUnitario(unitario []string, gramatica *gramatica.Gramatica) bool {
 	if len(unitario) == 1 {
 		if helpers.VerificarSeEstarNasKeys(gramatica.Alf, unitario[0]) {
 			return true
