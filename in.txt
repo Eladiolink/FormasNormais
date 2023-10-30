@@ -1,4 +1,0 @@
-S -> aA
-A -> B | aA
-B -> C | bB | BB
-C -> B | ab
