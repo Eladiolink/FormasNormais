@@ -49,7 +49,7 @@ func relocRegras(gramatica *gramatica.Gramatica, qtInicial int) *gramatica.Grama
 
 	for keys, producoes := range gramatica.P {
 		for chave, regra := range producoes {
-			if eVariavel(regra[0], gramatica.V) {
+			if helpers.IsVariavel(regra[0], gramatica.V) {
 				quantidade+=1
 				res := adicionarRegasComSubstituicaoReturn(regra[0], newGramatica, regra, chave, keys)
 
@@ -158,7 +158,7 @@ func renomearVariaveis(gramatica *gramatica.Gramatica) {
 	for r, regras := range gramatica.P {
 		for p, producoes := range regras {
 			for c, caracter := range producoes {
-				if !verificarSeElementoEVariavel(gramatica.Alf, caracter) {
+				if !helpers.IsVariavel(caracter,gramatica.Alf) {
 					gramatica.P[r][p][c] = renameMap[caracter]
 				}
 			}
@@ -189,7 +189,7 @@ func verificaVariaveisNumeros(gramatica *gramatica.Gramatica, qtInicial int) {
 	for keys, regras := range gramatica.P {
 		for chave, producoes := range regras {
 			if len(producoes) > 1 {
-				if keys < producoes[0] && eVariavel(producoes[0], newGramatica.V) {
+				if keys < producoes[0] && helpers.IsVariavel(producoes[0], newGramatica.V) {
 					quantidade += 1
 					adicionarRegasComSubstituicao(producoes[0], newGramatica, producoes, chave, keys)
 
@@ -266,16 +266,6 @@ func removerElementoPorIndice(slice []string, indice int) []string {
 	return novoSlice
 }
 
-func eVariavel(value string, variaveis []string) bool {
-
-	for _, key := range variaveis {
-		if key == value {
-			return true
-		}
-	}
-	return false
-}
-
 func copiarMapa(original map[string][][]string) map[string][][]string {
 	copia := make(map[string][][]string)
 
@@ -312,13 +302,4 @@ func copiarGramatica(original gramatica.Gramatica) *gramatica.Gramatica {
 	}
 
 	return &copia
-}
-
-func verificarSeElementoEVariavel(variavel []string, elemento string) bool {
-	for _, chave := range variavel {
-		if chave == elemento {
-			return true
-		}
-	}
-	return false
 }

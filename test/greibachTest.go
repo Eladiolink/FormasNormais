@@ -4,7 +4,6 @@ import (
 	"FormasNormais/helpers"
 	"FormasNormais/helpers/gramatica"
 	"fmt"
-	"strings"
 )
 
 func ValidadeGreibachGramaticar(gramatica *gramatica.Gramatica) {
@@ -40,13 +39,13 @@ func ValidadeGreibachGramaticar(gramatica *gramatica.Gramatica) {
 
 func verificarPrimeiroSimboloUnitarioERestanteVariavel(unitario []string, gramatica *gramatica.Gramatica) bool {
 	if len(unitario) > 1 {
-		if !verificarSeEstarNasKeys(gramatica.Alf, unitario[0]) {
+		if !helpers.VerificarSeEstarNasKeys(gramatica.Alf, unitario[0]) {
 			return false
 		}
 	}
 
 	for index, elm := range unitario {
-		if !verificarSeEstarNasKeys(gramatica.V, elm) && index > 0 {
+		if !helpers.VerificarSeEstarNasKeys(gramatica.V, elm) && index > 0 {
 			return false
 		}
 	}
@@ -56,7 +55,7 @@ func verificarPrimeiroSimboloUnitarioERestanteVariavel(unitario []string, gramat
 
 func verificarUnitario(unitario []string, gramatica *gramatica.Gramatica) bool {
 	if len(unitario) == 1 {
-		if verificarSeEstarNasKeys(gramatica.Alf, unitario[0]) {
+		if helpers.VerificarSeEstarNasKeys(gramatica.Alf, unitario[0]) {
 			return true
 		}
 	}
@@ -64,11 +63,4 @@ func verificarUnitario(unitario []string, gramatica *gramatica.Gramatica) bool {
 	return false
 }
 
-func verificarSeEstarNasKeys(variaveis []string, elm string) bool {
-	for _, key := range variaveis {
-		if strings.Compare(helpers.LimparString(key), helpers.LimparString(elm)) == 0 {
-			return true
-		}
-	}
-	return false
-}
+

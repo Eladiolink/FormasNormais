@@ -1,6 +1,7 @@
 package simplificacao
 
 import (
+	"FormasNormais/helpers"
 	"FormasNormais/helpers/gramatica"
 	"fmt"
 	"reflect"
@@ -61,7 +62,7 @@ func verificarRecusion(variaveisComPalavraVazia []string, gramatica *gramatica.G
 
 	for key := range gramatica.P {
 		if estaNoSlice2(gramatica.P[key], new) {
-			if !inArray(key, new) {
+			if !helpers.InArray(key, new) {
 				new = append(new, key)
 			}
 		}
@@ -92,7 +93,7 @@ func estaNoSlice(slice [][]string, value string) bool {
 func estaNoSlice2(slice [][]string, values []string) bool {
 
 	for _, elements := range slice {
-		if len(elements) == 1 && inArray(elements[0], values) {
+		if len(elements) == 1 && helpers.InArray(elements[0], values) {
 			return true
 		}
 	}
@@ -124,22 +125,14 @@ func compareArrays(arr1, arr2 []string) bool {
 func encontrarRemover(slice [][]string, elemento string) [][]string {
 	var new [][]string
 	for _, value := range slice {
-		if !valorInArray(value, elemento) {
+		if !helpers.InArray(elemento,value) {
 			new = append(new, value)
 		}
 	}
 	return new
 }
 
-func valorInArray(slice []string, elemento string) bool {
-	for _, vallue := range slice {
-		if vallue == elemento {
-			return true
-		}
-	}
 
-	return false
-}
 
 func verificaOcorrencia(slice [][]string, elemento []string) bool {
 	for _, valor := range slice {

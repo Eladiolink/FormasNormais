@@ -28,7 +28,7 @@ func removerRegraEsimbolo(remover []string,gramatica *gramatica.Gramatica){
 		gramatica.V = removerElementoPorValor(gramatica.V,elm)
 		for chave,regras := range gramatica.P {
 			for i,regra := range regras {
-				if inArray(elm,regra){
+				if helpers.InArray(elm,regra){
 					gramatica.P[chave] = removerElementoPeloOIndice(regras,i)
 				}
 			}
@@ -73,7 +73,7 @@ func encontarComProduçõesFinaisRecursion(gramatica *gramatica.Gramatica,termin
 
 func verificaTerminalRecusion(producoes []string, terminam []string) bool{
 	for _,posicaoProducao := range producoes{
-		if(verificarSeEstarNasKeys(terminam,posicaoProducao)){
+		if(helpers.VerificarSeEstarNasKeys(terminam,posicaoProducao)){
 			return true
 		}
 	}
@@ -82,7 +82,7 @@ func verificaTerminalRecusion(producoes []string, terminam []string) bool{
 
 func verificaTerminal(producoes []string,keys []string) bool{
 	for _,posicaoProducao := range producoes{
-		if(verificarSeEstarNasKeys(keys,posicaoProducao)){
+		if(helpers.VerificarSeEstarNasKeys(keys,posicaoProducao)){
 			return false
 		}
 	}
@@ -95,7 +95,7 @@ func removerInalcancaveis(gramatica *gramatica.Gramatica){
 	for _,key := range keys{
 		for _, regras := range gramatica.P[key]{
 			for _, producoes := range regras {
-				if(verificarSeEstarNasKeys(gramatica.V,producoes)){
+				if(helpers.VerificarSeEstarNasKeys(gramatica.V,producoes)){
 					if(!verificarSeJaEstar(valido,producoes)){
 						valido = append(valido, producoes)			
 					}
@@ -158,15 +158,6 @@ func removerElementoPorValor(arr []string, value string) []string {
     }
 
     return arr
-}
-
-func verificarSeEstarNasKeys(variaveis []string,elm string) bool {
-	for _,key := range variaveis {
-		if(strings.Compare(helpers.LimparString(key), helpers.LimparString(elm)) == 0){
-			return true
-		}
-	}
-	return false
 }
 
 func removerElementoPeloOIndice(arr [][]string, index int) [][]string {

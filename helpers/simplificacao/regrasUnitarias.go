@@ -4,7 +4,6 @@ import (
 	"FormasNormais/helpers"
 	"FormasNormais/helpers/gramatica"
 	"fmt"
-	"strings"
 )
 
 // precissa-se de refatoração
@@ -30,7 +29,7 @@ func RemocaoUnitarias(gramatica *gramatica.Gramatica) {
 func removerUnitario(variaveisComUnitarios []string,gramatica *gramatica.Gramatica){
 	for _, variavesUnitarios := range variaveisComUnitarios{
 		for index,regra := range gramatica.P[variavesUnitarios]{
-			if(len(regra)==1 && eVariavel(regra[0],gramatica.V)){
+			if(len(regra)==1 && helpers.IsVariavel(regra[0],gramatica.V)){
 				gramatica.P[variavesUnitarios] = removerElementoArray(index,gramatica.P[variavesUnitarios])
 				gramatica.P[variavesUnitarios] = adicionarRegas(gramatica.P[regra[0]],gramatica.P[variavesUnitarios])
 			}
@@ -75,16 +74,6 @@ func stringSlicesEqual(slice1, slice2 []string) bool {
     return true
 }
 
-func eVariavel(value string, variaveis []string) bool {
-
-	for _,key := range variaveis{
-		if(key == value){
-			return true
-		}
-	}
-	return false
-}
-
 func acharUnitariosRecursivos(variaveisComUnitarios []string,regras map[string][][]string){
 	for _, variavesUnitarios := range variaveisComUnitarios{
 		el := regras[variavesUnitarios]
@@ -122,7 +111,7 @@ func acharRegrasUnitarias(gramatica *gramatica.Gramatica)[]string{
 	for i,variaveis := range regras{
 		for _,producoes := range variaveis{
 			if len(producoes) == 1{
-				if(inArray(producoes[0],gramatica.V) && !inArray(i,comUnitarios)){
+				if(helpers.InArray(producoes[0],gramatica.V) && !helpers.InArray(i,comUnitarios)){
 					comUnitarios = append(comUnitarios, i)
 				}
 			}
@@ -130,15 +119,5 @@ func acharRegrasUnitarias(gramatica *gramatica.Gramatica)[]string{
 	}
 
 	return comUnitarios
-}
-
-func inArray(element string,variaveis []string) bool {
-	for _, elementos := range variaveis {
-		if strings.Compare(helpers.LimparString(element),elementos) == 0 {
-			return true
-		}
-	}
-
-	return false
 }
 

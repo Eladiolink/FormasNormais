@@ -1,6 +1,7 @@
 package formaprechomsky
 
 import (
+	"FormasNormais/helpers"
 	"FormasNormais/helpers/gramatica"
 	"FormasNormais/helpers/simplificacao"
 	"fmt"
@@ -24,9 +25,9 @@ func novasVariaveisComTerminais(gramatica *gramatica.Gramatica){
 		for i,producoes := range elementos{
 			if(len(producoes)>1){
 				for j,caracter := range producoes{
-					if (!verificarSeElementoEVariavel(gramatica.V,caracter)){
+					if (!helpers.IsVariavel(caracter,gramatica.V)){
 						novaVariavel := "V"+caracter
-						if(!verificarSeElementoEVariavel(novasVariaveis,novaVariavel)){
+						if(!helpers.IsVariavel(novaVariavel,novasVariaveis)){
 							mapa[novaVariavel] = caracter
 							el := []string{caracter}
 							novasVariaveis = append(novasVariaveis, novaVariavel)
@@ -39,14 +40,4 @@ func novasVariaveisComTerminais(gramatica *gramatica.Gramatica){
 			}
 		}
 	}
-}
-
-
-func verificarSeElementoEVariavel(variavel []string,elemento string) bool {
-	for _,chave := range variavel {
-		if(chave == elemento){
-			return true
-		}
-	}
-	return false
 }
