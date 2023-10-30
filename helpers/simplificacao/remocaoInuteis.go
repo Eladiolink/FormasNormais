@@ -1,6 +1,7 @@
 package simplificacao
 
 import (
+	"FormasNormais/helpers"
 	"FormasNormais/helpers/gramatica"
 	"fmt"
 	"strings"
@@ -132,7 +133,7 @@ func slice1NotSlice2(slice1 []string, slice2 []string)[] string{
 
 func verificarSeJaEstar(variaveis []string,elm string) bool {
 	for _,key := range variaveis {
-		if(strings.Compare(limparString(key), limparString(elm)) == 0){
+		if(strings.Compare(helpers.LimparString(key), helpers.LimparString(elm)) == 0){
 			return true
 		}
 	}
@@ -161,7 +162,7 @@ func removerElementoPorValor(arr []string, value string) []string {
 
 func verificarSeEstarNasKeys(variaveis []string,elm string) bool {
 	for _,key := range variaveis {
-		if(strings.Compare(limparString(key), limparString(elm)) == 0){
+		if(strings.Compare(helpers.LimparString(key), helpers.LimparString(elm)) == 0){
 			return true
 		}
 	}

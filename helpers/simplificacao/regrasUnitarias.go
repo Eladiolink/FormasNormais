@@ -1,6 +1,7 @@
 package simplificacao
 
 import (
+	"FormasNormais/helpers"
 	"FormasNormais/helpers/gramatica"
 	"fmt"
 	"strings"
@@ -133,7 +134,7 @@ func acharRegrasUnitarias(gramatica *gramatica.Gramatica)[]string{
 
 func inArray(element string,variaveis []string) bool {
 	for _, elementos := range variaveis {
-		if strings.Compare(limparString(element),elementos) == 0 {
+		if strings.Compare(helpers.LimparString(element),elementos) == 0 {
 			return true
 		}
 	}
@@ -141,6 +142,3 @@ func inArray(element string,variaveis []string) bool {
 	return false
 }
 
-func limparString(elemento string) string {
-	return strings.TrimRight(elemento, "\x00")
-}

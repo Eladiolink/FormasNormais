@@ -4,6 +4,7 @@ import (
 	formaprechomsky "FormasNormais/formasNormais/formaPreChomsky"
 	"FormasNormais/helpers"
 	"FormasNormais/helpers/gramatica"
+	"FormasNormais/test"
 	"fmt"
 	"strconv"
 )
@@ -33,6 +34,8 @@ func FormaGreibach(gramatica *gramatica.Gramatica) *gramatica.Gramatica {
 	gramatica = relocRegras(gramatica, 0)
 
 	fmt.Printf("\nGRAMÁTICA NA FORMA GREIBACH!!! (っ＾▿＾)۶🍸🌟🍺٩(˘◡˘ ) \n\n")
+
+	test.ValidadeGreibachGramaticar(gramatica)
 
 	return gramatica
 

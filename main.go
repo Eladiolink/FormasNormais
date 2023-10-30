@@ -6,8 +6,6 @@ import (
 	"FormasNormais/helpers"
 	"FormasNormais/helpers/export"
 	"FormasNormais/helpers/gramatica"
-
-	// "FormasNormais/helpers/simplificacao"
 	"fmt"
 	"os"
 )
@@ -22,7 +20,6 @@ func main() {
 
 
 	gramatica = controller(gramatica)
-	helpers.PrintGramatica(gramatica)
 	export.ExportToJson(gramatica)
 }
 
