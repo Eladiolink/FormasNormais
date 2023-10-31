@@ -23,6 +23,8 @@ type regraRemove struct {
 func FormaGreibach(gramatica *gramatica.Gramatica) *gramatica.Gramatica {
 	formaprechomsky.Formaprechomsky(gramatica)
 
+	helpers.PrintProducoes(gramatica)
+
 	// RenomearVariaveis
 	renomearVariaveis(gramatica)
 
@@ -43,9 +45,10 @@ func FormaGreibach(gramatica *gramatica.Gramatica) *gramatica.Gramatica {
 	 gramatica.P[key]	= removeIdenticalSubSlices(elm)
 	}
 
-	fmt.Println(len(gramatica.P["Z1"]),gramatica.P["Z1"])
-	return gramatica
+	helpers.PrintGramatica(gramatica)
+	fmt.Println()
 
+	return gramatica
 }
 
 // carece revisoes e melhorias :()
