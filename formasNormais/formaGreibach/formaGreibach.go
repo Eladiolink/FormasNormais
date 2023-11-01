@@ -6,6 +6,7 @@ import (
 	"FormasNormais/helpers/gramatica"
 	"FormasNormais/test"
 	"fmt"
+	// "os"
 	"reflect"
 	"strconv"
 )
@@ -13,6 +14,7 @@ import (
 type elemento struct {
 	Chave int
 	Key   string
+	Regra []string
 }
 
 type regraRemove struct {
@@ -32,7 +34,7 @@ func FormaGreibach(gramatica *gramatica.Gramatica) *gramatica.Gramatica {
 	// Remover Recursão a esquerda
 
 	helpers.PrintProducoes(gramatica)
-	gramatica = removerRecursaoEsquerda(gramatica,0)
+	gramatica = removerRecursaoEsquerda(gramatica, 0)
 	helpers.PrintProducoes(gramatica)
 
 	gramatica = relocRegras(gramatica, 0)
@@ -49,7 +51,7 @@ func FormaGreibach(gramatica *gramatica.Gramatica) *gramatica.Gramatica {
 	fmt.Println()
 
 	fmt.Println(len(gramatica.P["Z1"]))
-	
+
 	return gramatica
 }
 
@@ -131,6 +133,7 @@ func removerRecursaoEsquerda(gramatica *gramatica.Gramatica, qt int) *gramatica.
 				elm := elemento{
 					Chave: index,
 					Key:   variavel,
+					Regra: regras,
 				}
 
 				recursivo = append(recursivo, elm)
@@ -139,9 +142,9 @@ func removerRecursaoEsquerda(gramatica *gramatica.Gramatica, qt int) *gramatica.
 	}
 
 	gramatica = tratarRecursaoEsquerda(gramatica, recursivo)
-	
+
 	if qtInicial != qt {
-		gramatica = removerRecursaoEsquerda(gramatica,qtInicial)
+		gramatica = removerRecursaoEsquerda(gramatica, qtInicial)
 	}
 
 	return gramatica
@@ -159,20 +162,48 @@ func tratarRecursaoEsquerda(gramatica *gramatica.Gramatica, resursivos []element
 		newGramatica.P[newVar] = append(newGramatica.P[newVar], fragmento)
 
 		for i, regra := range newGramatica.P[elm.Key] {
-			if !verificarSeHaNoMap(resursivos,i){
+			if !verificarSeHaNoMap(resursivos, i) {
 				regra = append(regra, newVar)
 				newGramatica.P[elm.Key] = append(newGramatica.P[elm.Key], regra)
 			}
 		}
+	}
 
-		newGramatica.P[elm.Key] = removerElementoPorIndiceMatriz(newGramatica.P[elm.Key], elm.Chave)
+	for _, elm := range resursivos {
+		newGramatica.P[elm.Key] = removeElementoPeloElemento(newGramatica.P[elm.Key], elm.Regra)
 	}
 
 	return newGramatica
 }
 
-func verificarSeHaNoMap(recursivos []elemento,i int) bool{
-	for _,elm := range recursivos{
+func removeElementoPeloElemento(matriz [][]string, elementoARemover []string) [][]string {
+	var novaMatriz [][]string
+
+	for _, linha := range matriz {
+		encontrou := false
+
+		// Verifica se a linha atual é igual ao elemento que queremos remover
+		if len(linha) == len(elementoARemover) {
+			encontrou = true
+			for i := 0; i < len(linha); i++ {
+				if linha[i] != elementoARemover[i] {
+					encontrou = false
+					break
+				}
+			}
+		}
+
+		// Se a linha atual não é o elemento a ser removido, adiciona à nova matriz
+		if !encontrou {
+			novaMatriz = append(novaMatriz, linha)
+		}
+	}
+
+	return novaMatriz
+}
+
+func verificarSeHaNoMap(recursivos []elemento, i int) bool {
+	for _, elm := range recursivos {
 		if i == elm.Chave {
 			return true
 		}
@@ -280,10 +311,10 @@ func adicionarRegasComSubstituicaoReturn(adicionar string, gramatica *gramatica.
 		for _, key := range regraAdicionar {
 			joinRegra = append(joinRegra, key)
 		}
-		
-		regra= append(regra, joinRegra)
+
+		regra = append(regra, joinRegra)
 	}
-	
+
 	return regra
 }
 
