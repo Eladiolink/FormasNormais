@@ -18,6 +18,7 @@ func removerRecursicoNotTerminal(gramatica *gramatica.Gramatica){
 	// encontar com produções finais
 	comTerminais := encontarComProduçõesFinais(gramatica)
 	// encontarComProduçõesFinais(gramatica)
+	fmt.Println(comTerminais)
 	aRemover := slice1NotSlice2(gramatica.V,comTerminais)
 	removerRegraEsimbolo(aRemover,gramatica)
 }
@@ -76,22 +77,12 @@ func encontarComProduçõesFinaisRecursion(gramatica *gramatica.Gramatica,termin
 
 func verificaTerminalRecusion(producoes []string, terminam []string) bool{
 	for _,posicaoProducao := range producoes{
-		if(!helpers.VerificarSeEstarNasKeys(terminam,posicaoProducao)){
-			return false
+		if(helpers.VerificarSeEstarNasKeys(terminam,posicaoProducao)){
+			return true
 		}
 	}
-	return true
+	return false
 }
-
-
-// func verificaTerminalRecusion(producoes []string, terminam []string) bool{
-// 	for _,posicaoProducao := range producoes{
-// 		if(helpers.VerificarSeEstarNasKeys(terminam,posicaoProducao)){
-// 			return true
-// 		}
-// 	}
-// 	return false
-// }
 
 func verificaTerminal(producoes []string,keys []string) bool{
 	for _,posicaoProducao := range producoes{

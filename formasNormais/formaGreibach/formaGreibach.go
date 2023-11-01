@@ -31,13 +31,13 @@ func FormaGreibach(gramatica *gramatica.Gramatica) *gramatica.Gramatica {
 
 	// Remover Recursão a esquerda
 
-	gramatica = removerRecursaoEsquerda(gramatica)
 	helpers.PrintProducoes(gramatica)
-
+	gramatica = removerRecursaoEsquerda(gramatica,0)
+	helpers.PrintProducoes(gramatica)
 
 	gramatica = relocRegras(gramatica, 0)
 
-	// fmt.Printf("\nGRAMÁTICA NA FORMA GREIBACH!!! (っ＾▿＾)۶🍸🌟🍺٩(˘◡˘ ) \n\n")
+	fmt.Printf("\nGRAMÁTICA NA FORMA GREIBACH!!! (っ＾▿＾)۶🍸🌟🍺٩(˘◡˘ ) \n\n")
 
 	test.ValidadeGreibachGramatica(gramatica)
 
@@ -48,10 +48,8 @@ func FormaGreibach(gramatica *gramatica.Gramatica) *gramatica.Gramatica {
 	helpers.PrintGramatica(gramatica)
 	fmt.Println()
 
-	for _,elm := range gramatica.P["Z1"]{
-		fmt.Println(elm)
-	}
-
+	fmt.Println(len(gramatica.P["Z1"]))
+	
 	return gramatica
 }
 
@@ -121,13 +119,15 @@ func compareString(elm1 []string, elm2 []string) bool {
 	return true
 }
 
-func removerRecursaoEsquerda(gramatica *gramatica.Gramatica) *gramatica.Gramatica {
+func removerRecursaoEsquerda(gramatica *gramatica.Gramatica, qt int) *gramatica.Gramatica {
 	// verificar recusão a esquerda
+	qtInicial := qt
 	var recursivo []elemento
 
 	for variavel, producoes := range gramatica.P {
 		for index, regras := range producoes {
 			if variavel == regras[0] {
+				qtInicial += 1
 				elm := elemento{
 					Chave: index,
 					Key:   variavel,
@@ -138,11 +138,16 @@ func removerRecursaoEsquerda(gramatica *gramatica.Gramatica) *gramatica.Gramatic
 		}
 	}
 
-	return tratarRecursaoEsquerda(gramatica, recursivo)
+	gramatica = tratarRecursaoEsquerda(gramatica, recursivo)
+	
+	if qtInicial != qt {
+		gramatica = removerRecursaoEsquerda(gramatica,qtInicial)
+	}
+
+	return gramatica
 }
 
 func tratarRecursaoEsquerda(gramatica *gramatica.Gramatica, resursivos []elemento) *gramatica.Gramatica {
-	// var variavelNova []string
 	newGramatica := copiarGramatica(*gramatica)
 
 	for i, elm := range resursivos {
@@ -153,14 +158,27 @@ func tratarRecursaoEsquerda(gramatica *gramatica.Gramatica, resursivos []element
 		fragmento = append(fragmento, newVar)
 		newGramatica.P[newVar] = append(newGramatica.P[newVar], fragmento)
 
-		newGramatica.P[elm.Key] = removerElementoPorIndiceMatriz(newGramatica.P[elm.Key], elm.Chave)
-		for _, regra := range newGramatica.P[elm.Key] {
-			regra = append(regra, newVar)
-			newGramatica.P[elm.Key] = append(newGramatica.P[elm.Key], regra)
+		for i, regra := range newGramatica.P[elm.Key] {
+			if !verificarSeHaNoMap(resursivos,i){
+				regra = append(regra, newVar)
+				newGramatica.P[elm.Key] = append(newGramatica.P[elm.Key], regra)
+			}
 		}
+
+		newGramatica.P[elm.Key] = removerElementoPorIndiceMatriz(newGramatica.P[elm.Key], elm.Chave)
 	}
 
 	return newGramatica
+}
+
+func verificarSeHaNoMap(recursivos []elemento,i int) bool{
+	for _,elm := range recursivos{
+		if i == elm.Chave {
+			return true
+		}
+	}
+
+	return false
 }
 
 func renomearVariaveis(gramatica *gramatica.Gramatica) {
@@ -265,7 +283,7 @@ func adicionarRegasComSubstituicaoReturn(adicionar string, gramatica *gramatica.
 		
 		regra= append(regra, joinRegra)
 	}
-
+	
 	return regra
 }
 
