@@ -47,7 +47,10 @@ func encontarComProduçõesFinais(gramatica *gramatica.Gramatica)[]string{
 		}
 	}
 
+	fmt.Println(terminam)
 	terminam = encontarComProduçõesFinaisRecursion(gramatica,terminam,len(terminam))
+	fmt.Println(terminam)
+
 	return terminam
 }
 
@@ -73,12 +76,22 @@ func encontarComProduçõesFinaisRecursion(gramatica *gramatica.Gramatica,termin
 
 func verificaTerminalRecusion(producoes []string, terminam []string) bool{
 	for _,posicaoProducao := range producoes{
-		if(helpers.VerificarSeEstarNasKeys(terminam,posicaoProducao)){
-			return true
+		if(!helpers.VerificarSeEstarNasKeys(terminam,posicaoProducao)){
+			return false
 		}
 	}
-	return false
+	return true
 }
+
+
+// func verificaTerminalRecusion(producoes []string, terminam []string) bool{
+// 	for _,posicaoProducao := range producoes{
+// 		if(helpers.VerificarSeEstarNasKeys(terminam,posicaoProducao)){
+// 			return true
+// 		}
+// 	}
+// 	return false
+// }
 
 func verificaTerminal(producoes []string,keys []string) bool{
 	for _,posicaoProducao := range producoes{

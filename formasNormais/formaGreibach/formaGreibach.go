@@ -23,30 +23,34 @@ type regraRemove struct {
 func FormaGreibach(gramatica *gramatica.Gramatica) *gramatica.Gramatica {
 	formaprechomsky.Formaprechomsky(gramatica)
 
-	helpers.PrintProducoes(gramatica)
-
 	// RenomearVariaveis
 	renomearVariaveis(gramatica)
 
 	// Verificar Ax -> Aj com x<j
-	helpers.PrintProducoes(gramatica)
 	verificaVariaveisNumeros(gramatica, 0)
-	helpers.PrintProducoes(gramatica)
 
 	// Remover Recursão a esquerda
+
 	gramatica = removerRecursaoEsquerda(gramatica)
+	helpers.PrintProducoes(gramatica)
+
+
 	gramatica = relocRegras(gramatica, 0)
 
-	fmt.Printf("\nGRAMÁTICA NA FORMA GREIBACH!!! (っ＾▿＾)۶🍸🌟🍺٩(˘◡˘ ) \n\n")
+	// fmt.Printf("\nGRAMÁTICA NA FORMA GREIBACH!!! (っ＾▿＾)۶🍸🌟🍺٩(˘◡˘ ) \n\n")
 
 	test.ValidadeGreibachGramatica(gramatica)
 
-	for key,elm := range gramatica.P{
-	 gramatica.P[key]	= removeIdenticalSubSlices(elm)
+	for key, elm := range gramatica.P {
+		gramatica.P[key] = removeIdenticalSubSlices(elm)
 	}
 
 	helpers.PrintGramatica(gramatica)
 	fmt.Println()
+
+	for _,elm := range gramatica.P["Z1"]{
+		fmt.Println(elm)
+	}
 
 	return gramatica
 }
@@ -61,6 +65,7 @@ func relocRegras(gramatica *gramatica.Gramatica, qtInicial int) *gramatica.Grama
 		for chave, regra := range producoes {
 			if helpers.IsVariavel(regra[0], gramatica.V) {
 				quantidade += 1
+
 				res := adicionarRegasComSubstituicaoReturn(regra[0], newGramatica, regra, chave, keys)
 
 				for _, newElement := range res {
@@ -170,19 +175,18 @@ func renomearVariaveis(gramatica *gramatica.Gramatica) {
 
 	}
 
-	ranameCaracter := []string {}
+	ranameCaracter := []string{}
 
-	for i,_ :=  range renameMap{
+	for i, _ := range renameMap {
 		ranameCaracter = append(ranameCaracter, i)
 	}
-
 
 	for r, regras := range gramatica.P {
 		for p, producoes := range regras {
 			for c, caracter := range producoes {
-				if helpers.InArray(caracter,ranameCaracter) {
+				if helpers.InArray(caracter, ranameCaracter) {
 					gramatica.P[r][p][c] = renameMap[caracter]
-				}		
+				}
 			}
 		}
 	}
@@ -198,8 +202,8 @@ func renomearVariaveis(gramatica *gramatica.Gramatica) {
 		newVariaveis = append(newVariaveis, renameMap[elm])
 	}
 
-	for _,elm := range gramatica.V{
-		if !helpers.InArray(elm,ranameCaracter){
+	for _, elm := range gramatica.V {
+		if !helpers.InArray(elm, ranameCaracter) {
 			newVariaveis = append(newVariaveis, elm)
 		}
 	}
@@ -240,7 +244,6 @@ func verificaVariaveisNumeros(gramatica *gramatica.Gramatica, qtInicial int) {
 		}
 	}
 
-	
 	if quantidade != qtInicial {
 		verificaVariaveisNumeros(newGramatica, quantidade)
 	}
@@ -250,7 +253,8 @@ func verificaVariaveisNumeros(gramatica *gramatica.Gramatica, qtInicial int) {
 
 func adicionarRegasComSubstituicaoReturn(adicionar string, gramatica *gramatica.Gramatica, dado []string, key int, chave string) [][]string {
 	regraAdicionar := removerElementoPorIndice(gramatica.P[chave][key], 0)
-	var regras [][]string
+	regra := [][]string{}
+
 	for _, elm := range gramatica.P[adicionar] {
 		joinRegra := make([]string, len(elm))
 		copy(joinRegra, elm)
@@ -258,10 +262,11 @@ func adicionarRegasComSubstituicaoReturn(adicionar string, gramatica *gramatica.
 		for _, key := range regraAdicionar {
 			joinRegra = append(joinRegra, key)
 		}
-		regras = append(regras, joinRegra)
+		
+		regra= append(regra, joinRegra)
 	}
 
-	return regras
+	return regra
 }
 
 func adicionarRegasComSubstituicao(adicionar string, gramatica *gramatica.Gramatica, dado []string, key int, chave string) {
@@ -334,7 +339,6 @@ func copiarGramatica(original gramatica.Gramatica) *gramatica.Gramatica {
 	return &copia
 }
 
-
 func removeIdenticalSubSlices(s [][]string) [][]string {
 	var unique [][]string
 
@@ -352,7 +356,7 @@ func removeIdenticalSubSlices(s [][]string) [][]string {
 	}
 	return unique
 }
-	
+
 func equalSlices(s1, s2 []string) bool {
 	if len(s1) != len(s2) {
 		return false
