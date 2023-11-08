@@ -1,8 +1,6 @@
 package main
 
 import (
-	// formaprechomsky "FormasNormais/formaPreChomsky"
-	formachomsky "FormasNormais/formasNormais/formaChomsky"
 	formagreibach "FormasNormais/formasNormais/formaGreibach"
 	"FormasNormais/helpers"
 	"FormasNormais/helpers/export"
@@ -26,7 +24,7 @@ func main() {
 func controller(gramatica *gramatica.Gramatica) *gramatica.Gramatica {
 	switch os.Args[2] {
 	case "-C":
-		return formachomsky.FormaChomsky(gramatica)
+		return gramatica
 	case "-G":
 		return formagreibach.FormaGreibach(gramatica)
 	default:
