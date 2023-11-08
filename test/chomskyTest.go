@@ -9,6 +9,7 @@ import (
 func ValidadeChomskyGramatica(gramatica *gramatica.Gramatica){
 	validacaoUnitario := false
 	validacaoFormulaGeral := false
+	condition := true
 	
 	for _, producoes := range gramatica.P {
 		for _, regras := range producoes {
@@ -17,6 +18,7 @@ func ValidadeChomskyGramatica(gramatica *gramatica.Gramatica){
 			} else {
 				if len(regras) == 1 {
 					validacaoUnitario = false
+					condition = false
 					break
 				}
 			}
@@ -24,9 +26,14 @@ func ValidadeChomskyGramatica(gramatica *gramatica.Gramatica){
 			if verificarRegras(regras, gramatica) {
 				validacaoFormulaGeral = true
 			} else {
-				validacaoUnitario = false
+				validacaoFormulaGeral = false
+				condition = false
 				break
 			}
+		}
+
+		if !condition {
+			break
 		}
 	}
 
@@ -45,7 +52,7 @@ func verificarRegras(regras []string ,gramatica * gramatica.Gramatica) bool {
 				return false
 			}
 
-			if len(regras)>2{
+			if len(regras) == 2{
 				if !helpers.InArray(regras[0],gramatica.V) && !helpers.InArray(regras[1],gramatica.V) {
 					return false
 				}

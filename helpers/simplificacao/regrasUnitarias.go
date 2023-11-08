@@ -10,7 +10,7 @@ import (
 func RemocaoUnitarias(gramatica *gramatica.Gramatica) {
 		// Achar Variaveis com unitarios
 		comUnitarios := acharRegrasUnitarias(gramatica)
-
+		
 		//Corrigir  unitarios recursivos
 		if(len(comUnitarios)>0){
 			acharUnitariosRecursivos(comUnitarios,gramatica.P)
