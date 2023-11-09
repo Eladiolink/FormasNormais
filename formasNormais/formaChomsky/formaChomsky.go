@@ -18,10 +18,7 @@ func FormaChomsky(gramatica *gramatica.Gramatica) *gramatica.Gramatica {
 	formaprechomsky.Formaprechomsky(gramatica)
 	helpers.PrintGramatica(gramatica)
 
-
-	colocarNaquantidadeCorreta(gramatica,0)
-
-
+	colocarNaquantidadeCorreta(gramatica, 0)
 
 	test.ValidadeChomskyGramatica(gramatica)
 
@@ -32,11 +29,11 @@ func FormaChomsky(gramatica *gramatica.Gramatica) *gramatica.Gramatica {
 	return gramatica
 }
 
-func colocarNaquantidadeCorreta(gramatica *gramatica.Gramatica, qt int){
+func colocarNaquantidadeCorreta(gramatica *gramatica.Gramatica, qt int) {
 	var elementosRemover []regraRemove
 	qtInicial := qt
 
-	for keys,producoes := range gramatica.P{
+	for keys, producoes := range gramatica.P {
 		for indice, regras := range producoes {
 			if len(regras) > 2 {
 				qtInicial += 1
@@ -46,19 +43,19 @@ func colocarNaquantidadeCorreta(gramatica *gramatica.Gramatica, qt int){
 				}
 
 				elementosRemover = append(elementosRemover, elm)
-				gramatica.P[keys] = removerElementoPorIndiceMatriz(gramatica.P[keys],indice)
+				gramatica.P[keys] = removerElementoPorIndiceMatriz(gramatica.P[keys], indice)
 			}
 		}
 	}
 
 	index := 1
-	for _,elm := range elementosRemover{
-		parteUm,parteDois,erro := dividirArray(elm.Regra,1)
+	for _, elm := range elementosRemover {
+		parteUm, parteDois, erro := dividirArray(elm.Regra, 1)
 		if erro == nil {
 			novaRegra := []string{}
 			novaRegra = append(novaRegra, parteUm[0])
-			newVar := "Z" + strconv.Itoa(index)
-			index+=1
+			newVar := novaVar(gramatica)
+			index += 1
 			gramatica.P[newVar] = append(gramatica.P[newVar], parteDois)
 			novaRegra = append(novaRegra, newVar)
 			gramatica.P[elm.Key] = append(gramatica.P[elm.Key], novaRegra)
@@ -67,9 +64,21 @@ func colocarNaquantidadeCorreta(gramatica *gramatica.Gramatica, qt int){
 		}
 	}
 
-	// if qtInicial != qt {
-	// 	colocarNaquantidadeCorreta(gramatica, qtInicial)
-	// }
+	if qtInicial != qt {
+		colocarNaquantidadeCorreta(gramatica, qtInicial)
+	}
+}
+
+func novaVar(gramatica *gramatica.Gramatica) string {
+	var varZ []string
+	for _, elm := range gramatica.V {
+		firstElement := elm[0]
+		if string(firstElement) == string("Z") {
+			varZ = append(varZ, elm)
+		}
+	}
+
+	return "Z" + strconv.Itoa(len(varZ)+1)
 }
 
 func dividirArray(arr []string, indice int) (primeiraParte []string, segundaParte []string, err error) {
