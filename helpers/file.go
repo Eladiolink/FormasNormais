@@ -26,17 +26,16 @@ func File() *gramatica.Gramatica {
 		line = strings.ReplaceAll(line, " ", "")
 		line = strings.ReplaceAll(line, "\t", "")
 
-		if strings.Contains(line, "G:") || strings.Compare(line,"{") == 0 {
+		if strings.Contains(line, "G:") || strings.Compare(line, "{") == 0 {
 			continue
 		}
-		
+
 		if strings.Contains(line, "V:") {
 			line = strings.ReplaceAll(line, "V:[", "")
 			line = strings.ReplaceAll(line, "],", "")
 			gramatica.V = strings.Split(line, ",")
 			continue
 		}
-
 		gramatica.V = limparStringAll(gramatica.V)
 
 		if strings.Contains(line, "alf:") {
@@ -51,7 +50,7 @@ func File() *gramatica.Gramatica {
 		if strings.Contains(line, "P:{") {
 			continue
 		}
-		
+
 		if len(line) == 0 {
 			continue
 		}
@@ -62,17 +61,17 @@ func File() *gramatica.Gramatica {
 			continue
 		}
 
-		variavel := getStringToString(line,":")
-		line = removeFirstNCharacters(line, getIndexInString(line,":"))
+		variavel := getStringToString(line, ":")
+		line = removeFirstNCharacters(line, getIndexInString(line, ":"))
 		line = strings.ReplaceAll(line, ":[", "")
 		line = strings.ReplaceAll(line, "],", "")
 		line = strings.ReplaceAll(line, "]", "")
-		
+
 		//talvez remover depois
 		line = strings.ReplaceAll(line, "_", "")
-		
-		for _,element := range strings.Split(line, ",") {
-			gramatica.P[variavel] = append(gramatica.P[variavel],strings.Split(element,";"))
+
+		for _, element := range strings.Split(line, ",") {
+			gramatica.P[variavel] = append(gramatica.P[variavel], strings.Split(element, ";"))
 		}
 
 	}
@@ -86,8 +85,8 @@ func File() *gramatica.Gramatica {
 
 func getIndexInString(str string, simbol string) int {
 	index := -1
-	for x,i := range str{
-		if(strings.Compare(string(i),simbol) == 0 ){
+	for x, i := range str {
+		if strings.Compare(string(i), simbol) == 0 {
 			index = x
 			break
 		}
@@ -97,8 +96,8 @@ func getIndexInString(str string, simbol string) int {
 
 func getStringToString(str string, simbol string) string {
 	index := 0
-	for x,i := range str{
-		if(strings.Compare(string(i),simbol) == 0 ){
+	for x, i := range str {
+		if strings.Compare(string(i), simbol) == 0 {
 			index = x
 			break
 		}
