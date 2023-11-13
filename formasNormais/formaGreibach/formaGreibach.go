@@ -51,9 +51,6 @@ func FormaGreibach(gramatica *gramatica.Gramatica) *gramatica.Gramatica {
 	helpers.PrintGramatica(gramatica)
 	fmt.Println()
 
-	fmt.Println(len(gramatica.P["Z1"]))
-	fmt.Println(len(gramatica.P["A2"]))
-
 	return gramatica
 }
 
